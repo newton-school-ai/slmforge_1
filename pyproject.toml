@@ -1,0 +1,57 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "slmforge"
+version = "0.0.1"
+description = "Plug-and-play SLM builder. CLI + localhost web UI."
+readme = "README.md"
+requires-python = ">=3.11"
+license = {text = "Apache-2.0"}
+authors = [{name = "NST Engineering"}]
+
+dependencies = [
+    "transformers>=4.44",
+    "peft>=0.12",
+    "datasets>=2.20",
+    "accelerate>=0.33",
+    "torch>=2.3",
+    "fastapi>=0.111",
+    "uvicorn[standard]>=0.30",
+    "typer>=0.12",
+    "rich>=13.7",
+    "sqlalchemy>=2.0",
+    "alembic>=1.13",
+    "pydantic>=2.7",
+    "pandas>=2.2",
+    "scikit-learn>=1.5",
+]
+
+[project.scripts]
+slmforge = "slmforge.cli.main:app"
+
+[project.optional-dependencies]
+serve = ["vllm>=0.5"]
+quant = ["bitsandbytes>=0.43"]
+dev = [
+    "pytest>=8.2",
+    "pytest-asyncio>=0.23",
+    "black>=24.4",
+    "ruff>=0.4",
+    "pre-commit>=3.7",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.black]
+line-length = 100
+target-version = ["py311"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

@@ -1,0 +1,48 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [dev, main]
+  push:
+    branches: [main]
+
+jobs:
+  guard:
+    name: Hygiene checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: ASCII-only check
+        run: |
+          if grep -rPn '[^\x00-\x7F]' --include="*.md" --include="*.py" --include="*.sh" --include="*.yml" --include="*.yaml" --include="*.toml" . | grep -v '.git/'; then
+            echo "Non-ASCII characters found"
+            exit 1
+          fi
+
+      - name: Internal-data path guard
+        run: |
+          if find . -type f -path '*/_internal/*' ! -name 'PROJECT_CONTEXT.md' | grep -q .; then
+            echo "Forbidden file under _internal/"
+            exit 1
+          fi
+
+  test:
+    name: Lint + unit tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - name: Install
+        run: |
+          pip install -r requirements.txt
+          pip install -e .
+      - name: Lint
+        run: |
+          ruff check .
+          black --check .
+      - name: Unit tests
+        run: pytest tests/unit -q

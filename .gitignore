@@ -1,0 +1,48 @@
+# Secrets and local state
+.env
+.env.*
+!.env.example
+
+# Private scope (kickoff context, planning docs)
+_internal/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+.venv-*/
+venv/
+*.egg-info/
+build/
+dist/
+.eggs/
+pip-wheel-metadata/
+
+# Node
+node_modules/
+frontend/dist/
+frontend/.vite/
+
+# SLMForge runtime outputs
+builds/
+data/
+*.pkl
+*.pt
+*.safetensors
+
+# Test / coverage
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Bootstrap template (kept local, never pushed)
+CLAUDE.md
