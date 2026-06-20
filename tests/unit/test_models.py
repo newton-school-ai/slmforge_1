@@ -1,4 +1,3 @@
-from datetime import datetime
 # pyrefly: ignore [missing-import]
 import pytest
 from sqlalchemy import create_engine
@@ -43,7 +42,12 @@ def test_build_model(db_session) -> None:
 
 
 def test_run_model(db_session) -> None:
-    build = Build(id="build_test_123", status="RUNNING", task_type="classification", base_model="auto")
+    build = Build(
+        id="build_test_123",
+        status="RUNNING",
+        task_type="classification",
+        base_model="auto",
+    )
     db_session.add(build)
     db_session.commit()
 
