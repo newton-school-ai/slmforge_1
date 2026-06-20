@@ -18,6 +18,7 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 # Base class for SQLAlchemy models
 Base = declarative_base()
 
+
 def get_db() -> Generator:
     """Dependency for injecting database sessions into API routes."""
     db = SessionLocal()

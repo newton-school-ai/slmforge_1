@@ -26,9 +26,7 @@ class Build(Base):
     training_config = Column(JSON, nullable=True)
     eval_config = Column(JSON, nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
-    updated_at = Column(
-        DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False
-    )
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
 
     # Relationships
     runs = relationship("Run", back_populates="build", cascade="all, delete-orphan")
