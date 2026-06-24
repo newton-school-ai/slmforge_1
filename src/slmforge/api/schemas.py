@@ -5,6 +5,7 @@ from pydantic import BaseModel
 
 class SourceConfig(BaseModel):
     """Input data source configuration."""
+
     type: Literal["local", "public", "synthetic", "internal"]
     path: str | None = None
     id: str | None = None
