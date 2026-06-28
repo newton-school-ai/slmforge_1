@@ -66,7 +66,7 @@ Examples:
 - React Query for server state, useState for UI state
 
 ### Engine API Contract
-- `docs/ENGINE_API.md` is the source of truth for CLI <-> UI <-> engine boundaries
+- [`docs/ENGINE_API.md`](docs/ENGINE_API.md) is the source of truth for CLI <-> UI <-> engine boundaries
 - Any change to the contract requires maintainer review on the same PR
 - Bump the contract version (v0 -> v1) on breaking changes
 

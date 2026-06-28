@@ -216,7 +216,7 @@ Breaking changes include:
 
 Breaking changes require:
 
-1. Bumping the contract version (for example, `v0` → `v1`).
+1. Bumping the contract version (for example, `v0` -> `v1`).
 2. Updating this document in the same pull request.
 3. Keeping the CLI, Web UI, and engine synchronized with the same contract version.
 4. Obtaining maintainer review before merge.
