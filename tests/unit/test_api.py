@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from fastapi.testclient import TestClient
+
 from slmforge.api.main import app
 
 client = TestClient(app)

@@ -1,10 +1,10 @@
 import os
 from logging.config import fileConfig
 
-from slmforge.engine.state import Base
 from sqlalchemy import engine_from_config, pool
 
 from alembic import context
+from slmforge.engine.state import Base
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
