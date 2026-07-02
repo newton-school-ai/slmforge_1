@@ -1,11 +1,11 @@
 import pytest
-
 from slmforge.data.sources.base import Source
 from slmforge.data.sources.internal import InternalSource
 from slmforge.data.sources.local import LocalSource
-from slmforge.data.sources.registry import get_source
 from slmforge.data.sources.public import PublicHFSource
+from slmforge.data.sources.registry import get_source
 from slmforge.data.sources.synthetic import SyntheticSource
+
 
 def test_registry_resolves_sources() -> None:
     # Test resolving each known source type
