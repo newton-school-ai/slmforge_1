@@ -5,7 +5,7 @@ from pathlib import Path
 
 import pandas as pd
 
-from slmforge.data.ingest import IngestError, open_stream
+from slmforge.data.ingest import open_stream
 from slmforge.data.preview import first_n
 
 
@@ -13,7 +13,10 @@ def _write_fixture(tmp_path: Path) -> dict[str, Path]:
     jsonl_path = tmp_path / "data.jsonl"
     jsonl_path.write_text(
         "\n".join(
-            [json.dumps({"id": "1", "text": "hello", "source": "jsonl"}), json.dumps({"id": "2", "text": "world", "source": "jsonl"})]
+            [
+                json.dumps({"id": "1", "text": "hello", "source": "jsonl"}),
+                json.dumps({"id": "2", "text": "world", "source": "jsonl"}),
+            ]
         ),
         encoding="utf-8",
     )
@@ -23,7 +26,10 @@ def _write_fixture(tmp_path: Path) -> dict[str, Path]:
 
     parquet_path = tmp_path / "data.parquet"
     pd.DataFrame(
-        [{"id": "1", "text": "hello", "source": "parquet"}, {"id": "2", "text": "world", "source": "parquet"}]
+        [
+            {"id": "1", "text": "hello", "source": "parquet"},
+            {"id": "2", "text": "world", "source": "parquet"},
+        ]
     ).to_parquet(parquet_path)
 
     txt_dir = tmp_path / "txt-folder"
