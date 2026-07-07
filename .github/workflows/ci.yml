@@ -39,7 +39,6 @@ jobs:
       - name: Install
         run: |
           pip install -r requirements.txt
-          pip install starlette pytest
           pip install -e .
       - name: Lint
         run: |
