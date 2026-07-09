@@ -1,14 +1,12 @@
 from __future__ import annotations
 
 import random
-from typing import Any
-from typing import Iterable
 
-from datasets import Dataset
-from datasets import DatasetDict
+from typing import Any, Iterable
 
-from slmforge.data.sources.base import Record
-from slmforge.data.sources.base import Source
+from datasets import Dataset, DatasetDict
+
+from slmforge.data.sources.base import Record, Source
 
 
 class DatasetBuilder:

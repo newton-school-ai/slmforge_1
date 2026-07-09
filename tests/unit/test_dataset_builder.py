@@ -1,14 +1,10 @@
 from __future__ import annotations
 
-from typing import Any
-from typing import Iterator
-
-from datasets import DatasetDict
+from typing import Any, Iterator
 
 from slmforge.data.builder import DatasetBuilder
 from slmforge.data.card import render_dataset_card
-from slmforge.data.sources.base import Record
-from slmforge.data.sources.base import Source
+from slmforge.data.sources.base import Record, Source
 
 
 class DummySource(Source):
@@ -71,8 +67,16 @@ def test_dataset_card_includes_all_sources() -> None:
         {"type": "dummy", "identifier": "source_a", "size": 20, "license": "MIT"},
         {"type": "dummy", "identifier": "source_b", "size": 10, "license": "Apache-2.0"},
     ]
-    dataset = DatasetBuilder.build([DummySource("source_a", 20), DummySource("source_b", 10)], seed=42)
-    card = render_dataset_card("build123", sources, dataset, schema='{"input": "...", "target": "..."}')
+    dataset = DatasetBuilder.build(
+        [DummySource("source_a", 20), DummySource("source_b", 10)],
+        seed=42,
+    )
+    card = render_dataset_card(
+        "build123",
+        sources,
+        dataset,
+        schema='{"input": "...", "target": "..."}',
+    )
 
     assert "source_a" in card
     assert "source_b" in card
@@ -85,7 +89,12 @@ def test_dataset_card_includes_all_sources() -> None:
 def test_rendered_schema_in_card() -> None:
     sources = [{"type": "dummy", "identifier": "source_a", "size": 20, "license": "MIT"}]
     dataset = DatasetBuilder.build([DummySource("source_a", 20)], seed=42)
-    card = render_dataset_card("build123", sources, dataset, schema='{"input": "...", "target": "..."}')
+    card = render_dataset_card(
+        "build123",
+        sources,
+        dataset,
+        schema='{"input": "...", "target": "..."}',
+    )
 
     assert "\"input\": \"...\"" in card
     assert "\"target\": \"...\"" in card

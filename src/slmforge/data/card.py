@@ -1,7 +1,6 @@
 from __future__ import annotations
 
-from typing import Any
-from typing import Iterable
+from typing import Any, Iterable
 
 from datasets import DatasetDict
 
@@ -17,7 +16,13 @@ def render_dataset_card(
     rows = []
     for source in sources:
         source_type = source.get("type", "unknown")
-        identifier = source.get("identifier") or source.get("dataset_id") or source.get("path") or source.get("generator") or "unknown"
+        identifier = (
+            source.get("identifier")
+            or source.get("dataset_id")
+            or source.get("path")
+            or source.get("generator")
+            or "unknown"
+        )
         size = source.get("size", "unknown")
         licence = source.get("license") or source.get("licence") or "unknown"
         rows.append(f"| {source_type} | {identifier} | {size} | {licence} |")
