@@ -36,19 +36,12 @@ def render_dataset_card(
     for source in sources:
         source_type = source.get("type", "-")
 
-        identifier = (
-            source.get("id")
-            or source.get("path")
-            or source.get("generator")
-            or "-"
-        )
+        identifier = source.get("id") or source.get("path") or source.get("generator") or "-"
 
         size = source.get("size", "-")
         licence = source.get("licence", "-")
 
-        lines.append(
-            f"| {source_type} | {identifier} | {size} | {licence} |"
-        )
+        lines.append(f"| {source_type} | {identifier} | {size} | {licence} |")
 
     lines.append("")
     lines.append("## Notes")

@@ -15,5 +15,4 @@ def first_n(source: str | object, n: int = 5) -> list[Record]:
         if len(records) >= n:
             break
 
-
     return records

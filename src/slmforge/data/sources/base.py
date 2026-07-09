@@ -6,6 +6,7 @@ from typing import Any, Dict, Iterator, TypedDict
 
 class Record(TypedDict):
     """Unified record format returned by all source adapters."""
+
     id: str
     text: str
     metadata: Dict[str, Any]

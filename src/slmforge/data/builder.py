@@ -69,11 +69,7 @@ class DatasetBuilder:
             if not source_type:
                 raise ValueError("Every source must define a 'type'.")
 
-            config = {
-                key: value
-                for key, value in source.items()
-                if key != "type"
-            }
+            config = {key: value for key, value in source.items() if key != "type"}
 
             adapter = get_source(source_type, **config)
 
@@ -101,24 +97,16 @@ class DatasetBuilder:
                 )
 
             if not isinstance(record["id"], str):
-                raise ValueError(
-                    f"Record at index {index} has a non-string 'id'."
-                )
+                raise ValueError(f"Record at index {index} has a non-string 'id'.")
 
             if not isinstance(record["text"], str):
-                raise ValueError(
-                    f"Record at index {index} has a non-string 'text'."
-                )
+                raise ValueError(f"Record at index {index} has a non-string 'text'.")
 
             if not isinstance(record["metadata"], dict):
-                raise ValueError(
-                    f"Record at index {index} has invalid metadata."
-                )
+                raise ValueError(f"Record at index {index} has invalid metadata.")
 
             if not record["text"].strip():
-                raise ValueError(
-                    f"Record at index {index} contains empty text."
-                )
+                raise ValueError(f"Record at index {index} contains empty text.")
 
     def _split_records(
         self,
@@ -139,12 +127,8 @@ class DatasetBuilder:
         assert train_size + val_size + eval_size == total
 
         train_records = shuffled[:train_size]
-        val_records = shuffled[
-            train_size : train_size + val_size
-        ]
-        eval_records = shuffled[
-            train_size + val_size :
-        ]
+        val_records = shuffled[train_size : train_size + val_size]
+        eval_records = shuffled[train_size + val_size :]
 
         return DatasetDict(
             {
