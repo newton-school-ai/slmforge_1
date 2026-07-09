@@ -96,5 +96,5 @@ def test_rendered_schema_in_card() -> None:
         schema='{"input": "...", "target": "..."}',
     )
 
-    assert "\"input\": \"...\"" in card
-    assert "\"target\": \"...\"" in card
+    assert '"input": "..."' in card
+    assert '"target": "..."' in card
