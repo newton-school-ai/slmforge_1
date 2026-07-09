@@ -2,9 +2,9 @@ from __future__ import annotations
 
 import csv
 import json
+
 from pathlib import Path
-from typing import Any
-from typing import Generator
+from typing import Any, Generator
 
 import pandas as pd
 

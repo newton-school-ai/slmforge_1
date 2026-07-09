@@ -1,8 +1,6 @@
 from __future__ import annotations
 
-from typing import Iterable
-
-from slmforge.data.ingest import IngestError, Record, open_stream
+from slmforge.data.ingest import Record, open_stream
 
 
 def first_n(source: str | object, n: int = 5) -> list[Record]:
@@ -11,13 +9,11 @@ def first_n(source: str | object, n: int = 5) -> list[Record]:
         return []
 
     records: list[Record] = []
-    try:
-        stream = open_stream(source)
-        for record in stream:
-            records.append(record)
-            if len(records) >= n:
-                break
-    except IngestError as exc:
-        raise
+    stream = open_stream(source)
+    for record in stream:
+        records.append(record)
+        if len(records) >= n:
+            break
+
 
     return records
