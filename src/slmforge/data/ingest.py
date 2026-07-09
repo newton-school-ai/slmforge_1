@@ -2,9 +2,9 @@ from __future__ import annotations
 
 import csv
 import json
+
 from pathlib import Path
-from typing import Any
-from typing import Generator
+from typing import Any, Generator
 
 import pandas as pd
 
@@ -69,9 +69,7 @@ def detect_format(path: Path) -> str:
         except Exception:
             pass
 
-    raise IngestError(
-        f"Could not detect ingest format for path: {path} (mime={mime})"
-    )
+    raise IngestError(f"Could not detect ingest format for path: {path} (mime={mime})")
 
 
 def normalize_record(raw: dict[str, Any], source_id: str | None = None) -> Record:

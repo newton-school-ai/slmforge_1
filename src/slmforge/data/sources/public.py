@@ -45,8 +45,7 @@ class PublicHFSource(Source):
         yield {
             "id": f"public_{self.dataset_id}_0",
             "text": (
-                f"Placeholder text for public HF dataset '{self.dataset_id}' "
-                f"(split: {self.split})."
+                f"Placeholder text for public HF dataset '{self.dataset_id}' (split: {self.split})."
             ),
             "metadata": {
                 "dataset_id": self.dataset_id,
