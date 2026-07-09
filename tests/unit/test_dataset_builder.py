@@ -150,3 +150,31 @@ def test_dataset_builder_dataset_card_contents() -> None:
     assert "Train: 2" in card
     assert "Validation: 0" in card
     assert "Evaluation: 0" in card
+
+
+def test_dataset_builder_custom_split_ratio() -> None:
+    source = SyntheticSource(generator="gen_a", size=10)
+    # custom split 70% / 20% / 10%
+    ds = DatasetBuilder.build(source, split_ratio=(0.7, 0.2, 0.1), seed=42)
+    assert len(ds["train"]) == 7
+    assert len(ds["val"]) == 2
+    assert len(ds["eval"]) == 1
+
+
+def test_generate_card_writes_to_file(tmp_path) -> None:
+    from slmforge.data.card import generate_card
+    source = SyntheticSource(generator="gen_a", size=10)
+    output_file = tmp_path / "custom_card.md"
+
+    card_str = generate_card(
+        sources=[source],
+        split_sizes={"train": 8, "val": 1, "eval": 1},
+        seed=42,
+        output_path=str(output_file)
+    )
+
+    assert output_file.exists()
+    file_content = output_file.read_text(encoding="utf-8")
+    assert file_content == card_str
+    assert "Seed\n\n42" in file_content
+

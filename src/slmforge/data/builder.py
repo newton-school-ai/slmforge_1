@@ -1,10 +1,8 @@
 from __future__ import annotations
 
-import random
-
 import datasets
 
-from slmforge.data.card import generate_dataset_card
+from slmforge.data.card import generate_card
 from slmforge.data.sources.base import Record, Source
 
 
@@ -14,15 +12,20 @@ class DatasetBuilder:
     Also automatically generates dataset cards.
     """
 
+    DEFAULT_SEED = 42
+    DEFAULT_SPLIT = (0.8, 0.1, 0.1)
+
+    @staticmethod
     def build(
-        self,
         sources: list[Source] | Source,
-        seed: int = 42,
+        split_ratio: tuple = DEFAULT_SPLIT,
+        seed: int = DEFAULT_SEED,
     ) -> datasets.DatasetDict:
         """Build and split the dataset from the given sources.
 
         Args:
             sources: A single Source instance or a list of Source instances.
+            split_ratio: A tuple of (train, val, eval) ratio. Defaults to (0.8, 0.1, 0.1).
             seed: Seed used for deterministic splitting. Defaults to 42.
 
         Returns:
@@ -45,31 +48,28 @@ class DatasetBuilder:
                 count += 1
             source_sizes[source] = count
 
+        # Convert to Hugging Face Dataset
+        ds = datasets.Dataset.from_list(records)
+
         # Seeded deterministic shuffle
-        # We copy to avoid mutating the original source iterators' outputs (if reused)
-        shuffled_records = list(records)
-        rng = random.Random(seed)
-        rng.shuffle(shuffled_records)
+        ds_shuffled = ds.shuffle(seed=seed)
 
-        # Splitting logic: 80% train, 10% val, 10% eval
-        N = len(shuffled_records)
-        train_end = int(round(N * 0.8))
-        val_end = train_end + int(round(N * 0.1))
+        # Splitting logic based on split_ratio
+        N = len(ds_shuffled)
+        train_ratio, val_ratio, eval_ratio = split_ratio
 
-        train_records = shuffled_records[:train_end]
-        val_records = shuffled_records[train_end:val_end]
-        eval_records = shuffled_records[val_end:]
+        train_end = int(round(N * train_ratio))
+        val_end = train_end + int(round(N * val_ratio))
+
+        train_dataset = ds_shuffled.select(list(range(0, train_end)))
+        val_dataset = ds_shuffled.select(list(range(train_end, val_end)))
+        eval_dataset = ds_shuffled.select(list(range(val_end, N)))
 
         split_sizes = {
-            "train": len(train_records),
-            "val": len(val_records),
-            "eval": len(eval_records),
+            "train": len(train_dataset),
+            "val": len(val_dataset),
+            "eval": len(eval_dataset),
         }
-
-        # Create HF Dataset objects
-        train_dataset = datasets.Dataset.from_list(train_records)
-        val_dataset = datasets.Dataset.from_list(val_records)
-        eval_dataset = datasets.Dataset.from_list(eval_records)
 
         # Assemble the DatasetDict
         dataset_dict = datasets.DatasetDict(
@@ -81,7 +81,7 @@ class DatasetBuilder:
         )
 
         # Generate dataset card automatically
-        card = generate_dataset_card(
+        card = generate_card(
             sources=source_list,
             split_sizes=split_sizes,
             seed=seed,
@@ -92,3 +92,4 @@ class DatasetBuilder:
         dataset_dict.dataset_card = card
 
         return dataset_dict
+

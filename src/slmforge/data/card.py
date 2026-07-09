@@ -1,13 +1,16 @@
 from __future__ import annotations
 
+import os
+
 from slmforge.data.sources.base import Source
 
 
-def generate_dataset_card(
+def generate_card(
     sources: list[Source],
     split_sizes: dict[str, int],
     seed: int,
     source_sizes: dict[Source, int] | None = None,
+    output_path: str = "data/dataset_card.md",
 ) -> str:
     """Generate a markdown dataset card for the given sources and split sizes.
 
@@ -16,6 +19,7 @@ def generate_dataset_card(
         split_sizes: Dictionary containing sizes of 'train', 'val', and 'eval' splits.
         seed: The random seed used for splitting.
         source_sizes: Optional mapping from Source to number of records consumed from it.
+        output_path: Path to write the generated markdown card file.
 
     Returns:
         str: Markdown dataset card contents.
@@ -86,4 +90,12 @@ def generate_dataset_card(
         ]
     )
 
-    return "\n".join(lines)
+    card_content = "\n".join(lines)
+    if output_path:
+        dir_name = os.path.dirname(output_path)
+        if dir_name:
+            os.makedirs(dir_name, exist_ok=True)
+        with open(output_path, "w", encoding="utf-8") as f:
+            f.write(card_content)
+
+    return card_content
