@@ -163,6 +163,7 @@ def test_dataset_builder_custom_split_ratio() -> None:
 
 def test_generate_card_writes_to_file(tmp_path) -> None:
     from slmforge.data.card import generate_card
+
     source = SyntheticSource(generator="gen_a", size=10)
     output_file = tmp_path / "custom_card.md"
 
@@ -170,11 +171,10 @@ def test_generate_card_writes_to_file(tmp_path) -> None:
         sources=[source],
         split_sizes={"train": 8, "val": 1, "eval": 1},
         seed=42,
-        output_path=str(output_file)
+        output_path=str(output_file),
     )
 
     assert output_file.exists()
     file_content = output_file.read_text(encoding="utf-8")
     assert file_content == card_str
     assert "Seed\n\n42" in file_content
-
