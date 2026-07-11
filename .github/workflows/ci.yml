@@ -31,7 +31,7 @@ jobs:
         run: |
           echo 'Scanning for NST internal identifiers...'
           PATTERNS='_internal/|nst_data/|internal\.nst\.'
-          if git grep -E "$PATTERNS" -- '*.py' '*.yaml' '*.yml' '*.json' '*.md'; then
+          if git grep -E "$PATTERNS" -- '*.py' '*.yaml' '*.yml' '*.json' '*.md' | grep -vE '^(.*/\.github/workflows/ci\.yml|\.pre-commit-config\.yaml):'; then
             echo '::error::Internal data pattern detected!'
             exit 1
           fi
