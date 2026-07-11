@@ -22,8 +22,8 @@ jobs:
 
       - name: Internal-data path guard
         run: |
-          if find . -type f -path '*/_internal/*' ! -name 'PROJECT_CONTEXT.md' | grep -q .; then
-            echo "Forbidden file under _internal/"
+          if git ls-files | grep -E "(_internal/|nst-internal|newton-internal)" | grep -v "^_internal/PROJECT_CONTEXT.md$"; then
+            echo "Blocked: internal NST data detected."
             exit 1
           fi
 
