@@ -16,6 +16,11 @@ SOURCE_REGISTRY: dict[str, Type[Source]] = {
 }
 
 
+def list_source_types() -> list[str]:
+    """List all registered source types."""
+    return list(SOURCE_REGISTRY.keys())
+
+
 def get_source(source_type: str, **kwargs: Any) -> Source:
     """Retrieve and instantiate a source adapter based on the source type.
 

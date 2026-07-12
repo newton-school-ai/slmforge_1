@@ -22,7 +22,7 @@ repos:
       - id: block-internal-data
         name: Block internal NST data paths
         entry: >-
-          bash -c 'if git diff --cached --name-only | grep -E "^_internal/|nst-internal|newton-internal" | grep -v -x "_internal/PROJECT_CONTEXT.md" | grep -q .; then echo "Blocked: internal-data path"; exit 1; fi'
+          bash -c 'if grep -rE "_internal/|nst_data/|internal\.nst\." --include="*.py" --include="*.yaml" --include="*.yml" --include="*.json" --include="*.md" --exclude-dir=".git" --exclude-dir=".venv" . | grep -vE "^(.*/\.github/workflows/ci\.yml|\.pre-commit-config\.yaml|src/slmforge/data/source_guard\.py|tests/unit/test_source_guard\.py|README\.md|CONTRIBUTING\.md|GITHUB_ISSUES\.md|ISSUES_TRACKER\.md|MILESTONES\.md|POD_GUIDE\.md|docs/):" | grep -v "_internal/PROJECT_CONTEXT\.md" | grep -q .; then echo "Blocked: internal-data pattern found"; exit 1; fi'
         language: system
         pass_filenames: false
       - id: ascii-only
