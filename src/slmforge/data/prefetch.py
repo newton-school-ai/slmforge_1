@@ -15,6 +15,7 @@ DATASET_ALIASES = {
     "samsum": "knkarthick/samsum",
 }
 
+
 def prefetch(
     dataset_id: str,
     split: str = "train",
@@ -38,8 +39,8 @@ def prefetch(
     """
     dataset_name = dataset_id.replace("/", "_")
     resolved_dataset_id = DATASET_ALIASES.get(
-    dataset_id,
-    dataset_id,
+        dataset_id,
+        dataset_id,
     )
     dest_dir = cache_dir / dataset_name
     done_marker = dest_dir / ".done"
@@ -60,9 +61,10 @@ def prefetch(
 
     try:
         dataset = datasets.load_dataset(
-        resolved_dataset_id,
-        split=split,
-    )
+            resolved_dataset_id,
+            split=split,
+            cache_dir=str(dest_dir),
+        )
     except Exception as e:
         logger.error("Failed to load dataset '%s': %s", dataset_id, e)
         # Clean up directory if empty to avoid leaving stray directories
@@ -87,11 +89,11 @@ def prefetch(
         # Write LICENCE_INFO.md
         license_info_path = dest_dir / "LICENCE_INFO.md"
         license_info_content = (
-    f"# {dataset_name}\n\n"
-    f"- Licence: {license_str}\n"
-    f"- Size: {size} records\n"
-    f"- Split: {split}\n"
-)
+            f"# {dataset_name}\n\n"
+            f"- Licence: {license_str}\n"
+            f"- Size: {size} records\n"
+            f"- Split: {split}\n"
+        )
         license_info_path.write_text(license_info_content, encoding="utf-8")
 
         # Create .done marker file

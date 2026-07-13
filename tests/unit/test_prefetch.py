@@ -40,9 +40,10 @@ def test_prefetch_fresh_download(temp_cache_dir) -> None:
         assert expected_dir.exists()
 
         mock_load.assert_called_once_with(
-        "knkarthick/samsum",
-        split=split,
-    )
+            "knkarthick/samsum",
+            split=split,
+            cache_dir=str(expected_dir),
+        )
         mock_dataset.save_to_disk.assert_called_once_with(str(expected_dir))
 
         # Check marker file
@@ -89,7 +90,9 @@ def test_prefetch_uses_samsum_alias(temp_cache_dir) -> None:
         mock_load.assert_called_once_with(
             "knkarthick/samsum",
             split="train",
+            cache_dir=str(temp_cache_dir / "samsum"),
         )
+
 
 def test_prefetch_dataset_id_slash_replacement(temp_cache_dir) -> None:
     # Arrange
@@ -111,7 +114,11 @@ def test_prefetch_dataset_id_slash_replacement(temp_cache_dir) -> None:
         assert dest_dir == expected_dir
         assert expected_dir.exists()
 
-        mock_load.assert_called_once_with(dataset_id, split=split)
+        mock_load.assert_called_once_with(
+            dataset_id,
+            split=split,
+            cache_dir=str(expected_dir),
+        )
         assert (expected_dir / ".done").exists()
 
         licence_file = expected_dir / "LICENCE_INFO.md"
@@ -157,7 +164,7 @@ def test_cli_prefetch_success(temp_cache_dir) -> None:
         assert f"Cached at: {temp_cache_dir}/{dataset_id}" in result.stdout.strip()
 
 
-def test_cli_prefetch_already_cached(temp_cache_dir) -> None:
+def test_cli_prefetch_already_cached(temp_cache_dir, caplog) -> None:
     # Arrange
     runner = CliRunner()
     dataset_id = "samsum"
@@ -165,13 +172,21 @@ def test_cli_prefetch_already_cached(temp_cache_dir) -> None:
     dest_dir.mkdir(parents=True, exist_ok=True)
     (dest_dir / ".done").touch()
 
-    # Act
-    result = runner.invoke(app, ["data", "prefetch", dataset_id])
+    with (
+        patch("datasets.load_from_disk") as mock_load_from_disk,
+        patch("datasets.load_dataset") as mock_load_dataset,
+    ):
+        caplog.set_level(logging.INFO)
 
-    # Assert
-    assert result.exit_code == 0
-    assert "samsum already cached" in result.stdout
-    assert f"Cached at: {temp_cache_dir}/{dataset_id}" in result.stdout
+        # Act
+        result = runner.invoke(app, ["data", "prefetch", dataset_id])
+
+        # Assert
+        assert result.exit_code == 0
+        mock_load_from_disk.assert_called_once_with(str(dest_dir))
+        mock_load_dataset.assert_not_called()
+        assert "already cached" in caplog.text
+        assert f"Cached at: {temp_cache_dir}/{dataset_id}" in result.stdout
 
 
 def test_cli_prefetch_failure(temp_cache_dir) -> None:

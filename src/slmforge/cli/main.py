@@ -21,13 +21,6 @@ def prefetch_cmd(
     """Prefetch a public HuggingFace dataset and cache it locally."""
     from slmforge.data.prefetch import CACHE_DIR, prefetch
 
-    dataset_name = dataset_id.replace("/", "_")
-    dest_dir = CACHE_DIR / dataset_name
-    done_marker = dest_dir / ".done"
-
-    if done_marker.exists():
-        typer.echo(f"{dataset_id} already cached")
-
     try:
         path = prefetch(dataset_id=dataset_id, split=split, cache_dir=CACHE_DIR)
         typer.echo(f"Cached at: {path}")
