@@ -7,7 +7,11 @@ from __future__ import annotations
 
 import typer
 
+from slmforge.data.prefetch import prefetch
+
 app = typer.Typer(no_args_is_help=True, help="SLMForge -- plug-and-play SLM builder.")
+data_app = typer.Typer(no_args_is_help=True, help="Data management commands.")
+app.add_typer(data_app, name="data")
 
 
 @app.command()
@@ -41,6 +45,16 @@ def serve(build_id: str, port: int = 8000) -> None:
 def list_cmd() -> None:
     """List all builds in this folder."""
     typer.echo("list: not yet implemented (M7)")
+
+
+@data_app.command("prefetch")
+def prefetch_cmd(
+    dataset_id: str,
+    split: str = typer.Option("train", "--split", help="Dataset split to cache."),
+) -> None:
+    """Download and cache a public dataset for training."""
+    cache_path = prefetch(dataset_id, split=split)
+    typer.echo(f"Cached at: {cache_path}")
 
 
 @app.command()
