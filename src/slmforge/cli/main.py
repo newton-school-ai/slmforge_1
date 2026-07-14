@@ -9,6 +9,25 @@ import typer
 
 app = typer.Typer(no_args_is_help=True, help="SLMForge -- plug-and-play SLM builder.")
 
+data_app = typer.Typer(no_args_is_help=True, help="Data management utilities.")
+app.add_typer(data_app, name="data")
+
+
+@data_app.command(name="prefetch")
+def prefetch_cmd(
+    dataset_id: str = typer.Argument(..., help="HuggingFace dataset ID."),
+    split: str = typer.Option("train", "--split", help="Dataset split to prefetch."),
+) -> None:
+    """Prefetch a public HuggingFace dataset and cache it locally."""
+    from slmforge.data.prefetch import CACHE_DIR, prefetch
+
+    try:
+        path = prefetch(dataset_id=dataset_id, split=split, cache_dir=CACHE_DIR)
+        typer.echo(f"Cached at: {path}")
+    except Exception as e:
+        typer.echo(f"Error: {e}", err=True)
+        raise typer.Exit(code=1)
+
 
 @app.command()
 def init() -> None:
