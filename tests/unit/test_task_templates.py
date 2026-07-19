@@ -84,6 +84,26 @@ def test_render_and_strip_chat(format_style: str) -> None:
     )
 
 
+def test_render_record_preserves_present_falsy_values() -> None:
+    summarisation_record = {"document": "source", "summary": ""}
+    qa_record = {"question": "How old?", "answer": 0}
+    instruction_record = {"instruction": "", "prompt": "fallback", "input": "", "output": "done"}
+
+    summarisation_prompt, summarisation_target = render_record(
+        summarisation_record,
+        "summarisation",
+    )
+    qa_prompt, qa_target = render_record(qa_record, "qa")
+    instruction_prompt, instruction_target = render_record(instruction_record, "instruction")
+
+    assert summarisation_prompt == "source"
+    assert summarisation_target == ""
+    assert qa_prompt == "How old?"
+    assert qa_target == "0"
+    assert instruction_prompt == ""
+    assert instruction_target == "done"
+
+
 def _format_text(prompt: str, target: str, format_style: str) -> str:
     if format_style == "phi3":
         return f"<|user|>\n{prompt}<|end|>\n<|assistant|>\n{target}<|end|>"
