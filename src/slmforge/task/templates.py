@@ -15,6 +15,18 @@ def _select_first_value(record: dict[str, Any], keys: tuple[str, ...]) -> Any:
     return ""
 
 
+def apply_chat_template(prompt: str, target: str, format_style: str = "phi3") -> str:
+    """Wrap a prompt/target pair in the model-specific chat template markup."""
+    if format_style == "phi3":
+        return f"<|user|>\n{prompt}<|end|>\n<|assistant|>\n{target}<|end|>"
+    if format_style == "llama3.1":
+        return (
+            f"<|begin_of_text|><|start_header_id|>user<|end_header_id|>\n\n{prompt}"
+            f"<|eot_id|><|start_header_id|>assistant<|end_header_id|>\n\n{target}<|eot_id|>"
+        )
+    raise ValueError(f"Unsupported format style: {format_style}")
+
+
 def render_record(
     record: dict[str, Any],
     task_type: str,
@@ -31,25 +43,35 @@ def render_record(
 
     task_type = task_type.lower()
     if task_type == "classification":
-        prompt = str(_select_first_value(record, ("text", "input", "prompt")))
+        input_text = str(_select_first_value(record, ("text", "input", "prompt")))
         target = str(_select_first_value(record, ("label", "target", "output")))
+        prompt = f"{input_text}\nLabel:"
         return prompt, target
 
     if task_type == "summarisation":
-        prompt = str(_select_first_value(record, ("document", "text", "input")))
+        input_text = str(_select_first_value(record, ("document", "text", "input")))
         target = str(_select_first_value(record, ("summary", "target", "output")))
+        prompt = f"Summarize:\n{input_text}\nSummary:"
         return prompt, target
 
     if task_type == "qa":
-        prompt = str(_select_first_value(record, ("question", "prompt", "input")))
+        question = str(_select_first_value(record, ("question", "prompt", "input")))
         target = str(_select_first_value(record, ("answer", "target", "output")))
+        context_value = record.get("context")
+        if context_value:
+            prompt = f"Context: {context_value}\nQ: {question}\nA:"
+        else:
+            prompt = f"Q: {question}\nA:"
         return prompt, target
 
     if task_type == "instruction":
         instruction = str(_select_first_value(record, ("instruction", "prompt")))
         input_value = str(_select_first_value(record, ("input", "context")))
-        prompt = instruction if not input_value else f"{instruction}\n\n{input_value}"
         target = str(_select_first_value(record, ("output", "target", "answer")))
+        if input_value:
+            prompt = f"{instruction}\n{input_value}\nResponse:"
+        else:
+            prompt = f"{instruction}\nResponse:"
         return prompt, target
 
     if task_type == "chat":

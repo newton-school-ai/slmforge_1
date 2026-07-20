@@ -3,12 +3,13 @@
 from __future__ import annotations
 
 from slmforge.task.detector import LOW_CONFIDENCE_THRESHOLD, Detection, detect
-from slmforge.task.templates import render_record, strip_template
+from slmforge.task.templates import apply_chat_template, render_record, strip_template
 
 __all__ = [
     "detect",
     "Detection",
     "LOW_CONFIDENCE_THRESHOLD",
+    "apply_chat_template",
     "render_record",
     "strip_template",
 ]

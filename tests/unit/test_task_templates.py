@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pytest
 
-from slmforge.task.templates import render_record, strip_template
+from slmforge.task.templates import apply_chat_template, render_record, strip_template
 
 
 @pytest.mark.parametrize("format_style", ["phi3", "llama3.1"])
@@ -11,10 +11,10 @@ def test_render_and_strip_classification(format_style: str) -> None:
 
     prompt, target = render_record(record, "classification", format_style=format_style)
 
-    assert prompt == "This movie was fantastic."
+    assert prompt == "This movie was fantastic.\nLabel:"
     assert target == "positive"
     assert strip_template(
-        _format_text(prompt, target, format_style),
+        apply_chat_template(prompt, target, format_style),
         "classification",
         format_style=format_style,
     ) == (
@@ -32,10 +32,10 @@ def test_render_and_strip_summarisation(format_style: str) -> None:
 
     prompt, target = render_record(record, "summarisation", format_style=format_style)
 
-    assert prompt == "A long article about the moon landing."
+    assert prompt == "Summarize:\nA long article about the moon landing.\nSummary:"
     assert target == "The moon landing was historic."
     assert strip_template(
-        _format_text(prompt, target, format_style),
+        apply_chat_template(prompt, target, format_style),
         "summarisation",
         format_style=format_style,
     ) == (
@@ -50,10 +50,10 @@ def test_render_and_strip_qa(format_style: str) -> None:
 
     prompt, target = render_record(record, "qa", format_style=format_style)
 
-    assert prompt == "What is the capital of France?"
+    assert prompt == "Q: What is the capital of France?\nA:"
     assert target == "Paris"
     assert strip_template(
-        _format_text(prompt, target, format_style),
+        apply_chat_template(prompt, target, format_style),
         "qa",
         format_style=format_style,
     ) == (
@@ -72,10 +72,10 @@ def test_render_and_strip_instruction(format_style: str) -> None:
 
     prompt, target = render_record(record, "instruction", format_style=format_style)
 
-    assert prompt == "Write a short poem.\n\nAbout the ocean."
+    assert prompt == "Write a short poem.\nAbout the ocean.\nResponse:"
     assert target == "Blue waves whisper at dawn."
     assert strip_template(
-        _format_text(prompt, target, format_style),
+        apply_chat_template(prompt, target, format_style),
         "instruction",
         format_style=format_style,
     ) == (
@@ -98,7 +98,7 @@ def test_render_and_strip_chat(format_style: str) -> None:
     assert prompt == "user: Hello\nassistant: Hi there!"
     assert target == "Hi there!"
     assert strip_template(
-        _format_text(prompt, target, format_style),
+        apply_chat_template(prompt, target, format_style),
         "chat",
         format_style=format_style,
     ) == (
@@ -119,20 +119,9 @@ def test_render_record_preserves_present_falsy_values() -> None:
     qa_prompt, qa_target = render_record(qa_record, "qa")
     instruction_prompt, instruction_target = render_record(instruction_record, "instruction")
 
-    assert summarisation_prompt == "source"
+    assert summarisation_prompt == "Summarize:\nsource\nSummary:"
     assert summarisation_target == ""
-    assert qa_prompt == "How old?"
+    assert qa_prompt == "Q: How old?\nA:"
     assert qa_target == "0"
-    assert instruction_prompt == ""
+    assert instruction_prompt == "\nResponse:"
     assert instruction_target == "done"
-
-
-def _format_text(prompt: str, target: str, format_style: str) -> str:
-    if format_style == "phi3":
-        return f"<|user|>\n{prompt}<|end|>\n<|assistant|>\n{target}<|end|>"
-    if format_style == "llama3.1":
-        return (
-            f"<|begin_of_text|><|start_header_id|>user<|end_header_id|>\n\n{prompt}"
-            f"<|eot_id|><|start_header_id|>assistant<|end_header_id|>\n\n{target}<|eot_id|>"
-        )
-    raise ValueError(f"Unsupported format style: {format_style}")
