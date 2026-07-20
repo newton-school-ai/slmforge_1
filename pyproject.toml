@@ -68,6 +68,7 @@ ignore = []
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+pythonpath = ["src"]
 
 [tool.ruff.lint.isort]
 lines-between-types = 1  
