@@ -31,6 +31,45 @@ def test_post_builds_valid() -> None:
     data = r.json()
     assert data["build_id"] == "build_test_001"
     assert data["status"] == "queued"
+    assert data["task_type"] == "summarisation"
+    assert data["base_model"] == "auto"
+    assert data["template"] == "phi3"
+
+
+def test_post_builds_valid_with_template_override() -> None:
+    payload: dict = {
+        "sources": [{"type": "synthetic", "generator": "test", "size": 50}],
+        "task_type": "classification",
+        "base_model": "microsoft/Phi-3-mini-4k-instruct",
+        "template": "llama3.1",
+        "lora": {"r": 16, "alpha": 32, "dropout": 0.05},
+        "training": {"epochs": 2, "batch_size": 16, "lr": 0.0002},
+        "eval": {"llm_judge": False},
+    }
+    r = client.post("/builds", json=payload)
+    assert r.status_code == 200
+    data = r.json()
+    assert data["task_type"] == "classification"
+    assert data["base_model"] == "microsoft/Phi-3-mini-4k-instruct"
+    assert data["template"] == "llama3.1"
+
+
+def test_post_builds_invalid_template() -> None:
+    payload: dict = {
+        "sources": [{"type": "synthetic", "generator": "test", "size": 50}],
+        "task_type": "summarisation",
+        "base_model": "auto",
+        "template": "invalid_format",
+        "lora": {"r": 16, "alpha": 32, "dropout": 0.05},
+        "training": {"epochs": 2, "batch_size": 16, "lr": 0.0002},
+        "eval": {"llm_judge": False},
+    }
+    r = client.post("/builds", json=payload)
+    assert r.status_code == 422
+    error_body = r.json()
+    error_text = str(error_body)
+    assert "phi3" in error_text
+    assert "llama3.1" in error_text
 
 
 def test_post_builds_invalid_root() -> None:
@@ -102,6 +141,9 @@ def test_get_builds() -> None:
     assert len(data) == 1
     assert data[0]["build_id"] == "build_test_001"
     assert data[0]["status"] == "queued"
+    assert data[0]["task_type"] == "summarisation"
+    assert data[0]["base_model"] == "auto"
+    assert data[0]["template"] == "phi3"
 
 
 def test_get_build_by_id() -> None:

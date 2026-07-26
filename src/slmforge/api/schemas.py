@@ -64,11 +64,27 @@ class BuildRequest(BaseModel):
     sources: List[Source] = Field(..., description="List of dataset sources")
     task_type: TaskType = Field(..., description="Type of task to train for")
     base_model: str = Field(..., description="Base model name or 'auto'")
+    template: Optional[str] = Field("phi3", description="Chat template format (phi3 or llama3.1)")
     lora: LoRAConfig = Field(..., description="LoRA configuration parameters")
     training: TrainingConfig = Field(..., description="Training hyperparameters")
     eval: EvalConfig = Field(..., description="Evaluation configuration parameters")
+
+    @model_validator(mode="after")
+    def validate_template(self) -> BuildRequest:
+        if self.template is not None:
+            from slmforge.task.templates import _SUPPORTED_FORMATS
+
+            if self.template not in _SUPPORTED_FORMATS:
+                raise ValueError(
+                    f"Unsupported template '{self.template}'. "
+                    f"Must be one of: {', '.join(sorted(_SUPPORTED_FORMATS))}"
+                )
+        return self
 
 
 class BuildResponse(BaseModel):
     build_id: str = Field(..., description="Unique ID for the build")
     status: str = Field(..., description="Current status of the build")
+    task_type: Optional[str] = Field(None, description="Task type used for the build")
+    base_model: Optional[str] = Field(None, description="Base model used for the build")
+    template: Optional[str] = Field(None, description="Template format used for the build")
