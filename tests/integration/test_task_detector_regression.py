@@ -9,7 +9,7 @@ from slmforge.task import detect
 FIXTURE_DIR = Path(__file__).parent.parent / "fixtures" / "task_detection"
 
 
-def load_regression_samples():
+def load_regression_samples() -> list[dict[str, object]]:
     """Load all regression samples from fixture files."""
     samples = []
 
@@ -30,7 +30,7 @@ def test_task_detector_regression():
 
     samples = load_regression_samples()
 
-    assert len(samples) >= 30
+    assert len(samples) >= 30 , (f"Expected at least 30 regression samples, found {len(samples)}")
 
     correct = 0
     failures = []
@@ -54,17 +54,8 @@ def test_task_detector_regression():
 
     accuracy = correct / len(samples)
 
-    print(f"\nAccuracy: {accuracy:.2%}")
-    print(f"Correct: {correct}/{len(samples)}")
-
-    if failures:
-        print("\nMisclassified samples:")
-        for failure in failures:
-            print(
-                f"Sample {failure[0]} "
-                f"Expected={failure[1]} "
-                f"Predicted={failure[2]} "
-                f"Confidence={failure[3]}"
-            )
-
-    assert accuracy >= 0.85
+    assert accuracy >= 0.85, (
+        f"Regression accuracy {accuracy:.2%} is below the required 85%. "
+        f"Correct={correct}/{len(samples)}. "
+        f"Failures={failures}"
+    )
