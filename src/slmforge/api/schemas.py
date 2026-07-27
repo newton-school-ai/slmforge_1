@@ -20,7 +20,7 @@ class TaskType(str, Enum):
     instruction = "instruction"
     chat = "chat"
     auto = "auto"
-    
+
 class TemplateType(str, Enum):
     auto = "auto"
     phi3 = "phi3"
@@ -98,7 +98,7 @@ class BuildRequest(BaseModel):
         ...,
         description="Evaluation configuration parameters"
     )
-    
+
 class BuildResponse(BaseModel):
     build_id: str = Field(..., description="Unique ID for the build")
     status: str = Field(..., description="Current status of the build")

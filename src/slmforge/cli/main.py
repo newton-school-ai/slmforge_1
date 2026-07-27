@@ -6,6 +6,7 @@ Subcommands are stubbed for M1. Real implementations land in M7.
 from __future__ import annotations
 
 import typer
+
 from slmforge.api.schemas import TaskType, TemplateType
 
 app = typer.Typer(no_args_is_help=True, help="SLMForge -- plug-and-play SLM builder.")
@@ -73,7 +74,7 @@ def build(
         f"base={base} "
         f"template={template.value}"
     )
-    
+
 @app.command()
 def eval(build_id: str) -> None:  # noqa: A002
     """Re-run eval on an existing build."""
