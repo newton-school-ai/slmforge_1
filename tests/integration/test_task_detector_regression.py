@@ -30,7 +30,7 @@ def test_task_detector_regression():
 
     samples = load_regression_samples()
 
-    assert len(samples) >= 30 , (f"Expected at least 30 regression samples, found {len(samples)}")
+    assert len(samples) >= 30, f"Expected at least 30 regression samples, found {len(samples)}"
 
     correct = 0
     failures = []
