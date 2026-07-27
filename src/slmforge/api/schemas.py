@@ -20,6 +20,11 @@ class TaskType(str, Enum):
     instruction = "instruction"
     chat = "chat"
     auto = "auto"
+    
+class TemplateType(str, Enum):
+    auto = "auto"
+    phi3 = "phi3"
+    llama31 = "llama3.1"
 
 
 class Source(BaseModel):
@@ -61,14 +66,39 @@ class EvalConfig(BaseModel):
 
 
 class BuildRequest(BaseModel):
-    sources: List[Source] = Field(..., description="List of dataset sources")
-    task_type: TaskType = Field(..., description="Type of task to train for")
-    base_model: str = Field(..., description="Base model name or 'auto'")
-    lora: LoRAConfig = Field(..., description="LoRA configuration parameters")
-    training: TrainingConfig = Field(..., description="Training hyperparameters")
-    eval: EvalConfig = Field(..., description="Evaluation configuration parameters")
+    sources: List[Source] = Field(
+        ...,
+        description="List of dataset sources"
+    )
 
+    task_type: TaskType = Field(
+        ...,
+        description="Type of task to train for",
+    )
+    base_model: str = Field(
+        ...,
+        description="Base model name or 'auto'",
+    )
 
+    template: TemplateType = Field(
+        default=TemplateType.auto,
+        description="Chat template override or 'auto'",
+    )
+
+    lora: LoRAConfig = Field(
+        ...,
+        description="LoRA configuration parameters"
+    )
+
+    training: TrainingConfig = Field(
+        ...,
+        description="Training hyperparameters"
+    )
+    eval: EvalConfig = Field(
+        ...,
+        description="Evaluation configuration parameters"
+    )
+    
 class BuildResponse(BaseModel):
     build_id: str = Field(..., description="Unique ID for the build")
     status: str = Field(..., description="Current status of the build")

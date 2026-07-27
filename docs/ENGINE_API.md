@@ -26,6 +26,7 @@ The CLI and Web UI submit build requests using the following JSON structure.
   ],
   "task_type": "summarisation",
   "base_model": "auto",
+  "template": "auto",
   "lora": {
     "r": 16,
     "alpha": 32,
@@ -104,6 +105,22 @@ Supported values:
 microsoft/Phi-3-mini-4k-instruct
 ```
 
+### Template
+
+Overrides the automatically detected chat template.
+
+Supported values:
+
+* `auto`
+* `phi3`
+* `llama3.1`
+
+**Example**
+
+```text
+phi3
+```
+
 ---
 
 ## REST API Endpoints
@@ -155,15 +172,15 @@ The engine emits newline-delimited JSON events through the WebSocket connection.
 
 ### Event Definitions
 
-| Event              | Description                                       |
-| ------------------ | ------------------------------------------------- |
-| `discover_sources` | Source discovery completed                        |
-| `detect_task`      | Engine detected the dataset task type             |
-| `plan`             | Hardware requirements and training plan generated |
-| `epoch`            | Training progress update                          |
-| `checkpoint`       | Model checkpoint saved                            |
-| `eval`             | Evaluation metrics generated                      |
-| `complete`         | Build completed successfully                      |
+| Event | Description |
+|-------|-------------|
+| `discover_sources` | Source discovery completed |
+| `detect_task` | Engine detected the dataset task type |
+| `plan` | Hardware requirements and training plan generated |
+| `epoch` | Training progress update |
+| `checkpoint` | Model checkpoint saved |
+| `eval` | Evaluation metrics generated |
+| `complete` | Build completed successfully |
 
 ---
 
@@ -192,14 +209,14 @@ builds/<build_id>/
 
 ### Directory Contents
 
-| File              | Description                                         |
-| ----------------- | --------------------------------------------------- |
-| `adapter/`        | LoRA adapter weights                                |
-| `dataset_card.md` | Dataset metadata, sources, splits, and licence      |
-| `model_card.md`   | Base model, hyperparameters, and evaluation summary |
-| `eval_report.md`  | Complete evaluation report                          |
-| `USAGE.md`        | Example inference commands and integration notes    |
-| `serve.sh`        | Helper script for serving the trained model         |
+| File | Description |
+|------|-------------|
+| `adapter/` | LoRA adapter weights |
+| `dataset_card.md` | Dataset metadata, sources, splits, and licence |
+| `model_card.md` | Base model, hyperparameters, and evaluation summary |
+| `eval_report.md` | Complete evaluation report |
+| `USAGE.md` | Example inference commands and integration notes |
+| `serve.sh` | Helper script for serving the trained model |
 
 ---
 
@@ -216,7 +233,7 @@ Breaking changes include:
 
 Breaking changes require:
 
-1. Bumping the contract version (for example, `v0` -> `v1`).
+1. Bumping the contract version (for example, `v0` → `v1`).
 2. Updating this document in the same pull request.
 3. Keeping the CLI, Web UI, and engine synchronized with the same contract version.
 4. Obtaining maintainer review before merge.

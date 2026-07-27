@@ -6,6 +6,7 @@ Subcommands are stubbed for M1. Real implementations land in M7.
 from __future__ import annotations
 
 import typer
+from slmforge.api.schemas import TaskType, TemplateType
 
 app = typer.Typer(no_args_is_help=True, help="SLMForge -- plug-and-play SLM builder.")
 
@@ -37,13 +38,42 @@ def init() -> None:
 
 @app.command()
 def build(
-    auto: bool = typer.Option(False, "--auto", help="Skip all confirmation prompts."),
-    recipe: str | None = typer.Option(None, "--recipe", help="Run a bundled recipe by name."),
+    auto: bool = typer.Option(
+        False,
+        "--auto",
+        help="Skip all confirmation prompts.",
+    ),
+    recipe: str | None = typer.Option(
+        None,
+        "--recipe",
+        help="Run a bundled recipe by name.",
+    ),
+    task: TaskType = typer.Option(
+        TaskType.auto,
+        "--task",
+        help="Override detected task type.",
+    ),
+    base: str = typer.Option(
+        "auto",
+        "--base",
+        help="Override detected base model.",
+    ),
+    template: TemplateType = typer.Option(
+        TemplateType.auto,
+        "--template",
+        help="Override detected chat template.",
+    ),
 ) -> None:
-    """Discover data in cwd, detect task, fine-tune, eval, and print usage doc."""
-    typer.echo(f"build: not yet implemented (M7). auto={auto} recipe={recipe}")
-
-
+    """Build an SLM from a recipe or local model."""
+    typer.echo(
+        "build: not yet implemented (M7). "
+        f"auto={auto} "
+        f"recipe={recipe} "
+        f"task={task.value} "
+        f"base={base} "
+        f"template={template.value}"
+    )
+    
 @app.command()
 def eval(build_id: str) -> None:  # noqa: A002
     """Re-run eval on an existing build."""
