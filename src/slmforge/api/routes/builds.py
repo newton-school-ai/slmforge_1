@@ -12,13 +12,27 @@ router = APIRouter(prefix="/builds", tags=["builds"])
 @router.post("", response_model=BuildResponse)
 def create_build(payload: BuildRequest) -> BuildResponse:
     """Create a new model fine-tuning build."""
-    return BuildResponse(build_id="build_test_001", status="queued")
+    return BuildResponse(
+        build_id="build_test_001",
+        status="queued",
+        task_type=payload.task_type.value if payload.task_type else None,
+        base_model=payload.base_model,
+        template=payload.template,
+    )
 
 
 @router.get("", response_model=List[BuildResponse])
 def list_builds() -> List[BuildResponse]:
     """List all model builds."""
-    return [BuildResponse(build_id="build_test_001", status="queued")]
+    return [
+        BuildResponse(
+            build_id="build_test_001",
+            status="queued",
+            task_type="summarisation",
+            base_model="auto",
+            template="phi3",
+        )
+    ]
 
 
 @router.get("/{build_id}", response_model=BuildResponse)

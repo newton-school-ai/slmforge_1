@@ -5,12 +5,114 @@ Subcommands are stubbed for M1. Real implementations land in M7.
 
 from __future__ import annotations
 
+import json
+import re
+import urllib.request
+
+from typing import Any
+
 import typer
+
+_VALID_TASK_TYPES = frozenset(
+    {
+        "classification",
+        "summarisation",
+        "qa",
+        "instruction",
+        "chat",
+        "auto",
+    }
+)
+
+_VALID_TEMPLATES = frozenset({"phi3", "llama3.1"})
+
+_BASE_MODEL_PATTERN = re.compile(r"^[a-zA-Z0-9_.-]+/[a-zA-Z0-9_.-]+$")
+
+_API_BASE = "http://localhost:8000"
 
 app = typer.Typer(no_args_is_help=True, help="SLMForge -- plug-and-play SLM builder.")
 
 data_app = typer.Typer(no_args_is_help=True, help="Data management utilities.")
 app.add_typer(data_app, name="data")
+
+
+def _validate_override(value: str | None, valid_set: frozenset, flag: str, label: str) -> None:
+    if value is not None and value not in valid_set:
+        typer.echo(
+            f"Error: invalid {label} '{value}' for --{flag}. "
+            f"Must be one of: {', '.join(sorted(valid_set))}",
+            err=True,
+        )
+        raise typer.Exit(code=1)
+
+
+def _validate_base_model(value: str | None) -> None:
+    if value is not None and value != "auto" and not _BASE_MODEL_PATTERN.match(value):
+        typer.echo(
+            f"Error: invalid base model '{value}' for --base. "
+            "Must be 'auto' or a valid HuggingFace model ID "
+            "(e.g. 'microsoft/Phi-3-mini-4k-instruct').",
+            err=True,
+        )
+        raise typer.Exit(code=1)
+
+
+def _build_payload(
+    task: str | None,
+    base: str | None,
+    template: str | None,
+    recipe: str | None,
+) -> dict[str, Any]:
+    payload: dict[str, Any] = {
+        "task_type": task or "auto",
+        "base_model": base or "auto",
+        "template": template or "phi3",
+        "lora": {"r": 16, "alpha": 32, "dropout": 0.05},
+        "training": {"epochs": 2, "batch_size": 16, "lr": 0.0002},
+        "eval": {"llm_judge": False},
+    }
+    if recipe:
+        payload["recipe"] = recipe
+    if task:
+        payload["_override_task"] = True
+    if base:
+        payload["_override_base"] = True
+    if template:
+        payload["_override_template"] = True
+    return payload
+
+
+def _post_build(payload: dict[str, Any]) -> dict[str, Any]:
+    data = json.dumps(payload).encode("utf-8")
+    req = urllib.request.Request(
+        f"{_API_BASE}/builds",
+        data=data,
+        headers={"Content-Type": "application/json"},
+        method="POST",
+    )
+    try:
+        with urllib.request.urlopen(req) as resp:
+            return json.loads(resp.read().decode("utf-8"))
+    except urllib.error.HTTPError as e:
+        body = e.read().decode("utf-8")
+        typer.echo(f"API error ({e.code}): {body}", err=True)
+        raise typer.Exit(code=1)
+    except urllib.error.URLError:
+        typer.echo(
+            f"Error: could not reach the SLMForge API at {_API_BASE}. "
+            f"Is the server running? (try `slmforge ui`)",
+            err=True,
+        )
+        raise typer.Exit(code=1)
+
+
+def _display_build(result: dict[str, Any]) -> None:
+    typer.echo("Build created:")
+    typer.echo(f"  ID:          {result.get('build_id', '?')}")
+    typer.echo(f"  Task type:   {result.get('task_type', '?')}")
+    typer.echo(f"  Base model:  {result.get('base_model', '?')}")
+    typer.echo(f"  Template:    {result.get('template', '?')}")
+    typer.echo(f"  Status:      {result.get('status', '?')}")
 
 
 @data_app.command(name="prefetch")
@@ -39,9 +141,37 @@ def init() -> None:
 def build(
     auto: bool = typer.Option(False, "--auto", help="Skip all confirmation prompts."),
     recipe: str | None = typer.Option(None, "--recipe", help="Run a bundled recipe by name."),
+    task: str | None = typer.Option(
+        None,
+        "--task",
+        help="Override task type: classification, summarisation, qa, instruction, chat, or 'auto'.",
+    ),
+    base: str | None = typer.Option(
+        None,
+        "--base",
+        help='Override base model: "auto" or HF model ID (e.g. microsoft/Phi-3-mini-4k-instruct).',
+    ),
+    template: str | None = typer.Option(
+        None,
+        "--template",
+        help="Override chat template format: phi3 or llama3.1.",
+    ),
 ) -> None:
     """Discover data in cwd, detect task, fine-tune, eval, and print usage doc."""
-    typer.echo(f"build: not yet implemented (M7). auto={auto} recipe={recipe}")
+    _validate_override(task, _VALID_TASK_TYPES, "task", "task type")
+    _validate_base_model(base)
+    _validate_override(template, _VALID_TEMPLATES, "template", "template format")
+
+    payload = _build_payload(task, base, template, recipe)
+    try:
+        result = _post_build(payload)
+    except typer.Exit:
+        raise
+    except Exception as e:
+        typer.echo(f"Error: {e}", err=True)
+        raise typer.Exit(code=1)
+
+    _display_build(result)
 
 
 @app.command()
