@@ -57,5 +57,5 @@ jobs:
         run: |
           ruff check .
           black --check .
-      - name: Unit tests
-        run: pytest tests/unit -q
+      - name: Unit & Integration tests
+        run: pytest tests/unit tests/integration -q

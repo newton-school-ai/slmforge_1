@@ -1,0 +1,92 @@
+[
+  {
+    "label": "instruction",
+    "dataset": [
+      {
+        "instruction": "Translate the sentence into French.",
+        "input": "Good morning.",
+        "output": "Bonjour."
+      },
+      {
+        "instruction": "Translate the sentence into Spanish.",
+        "input": "Thank you.",
+        "output": "Gracias."
+      }
+    ]
+  },
+  {
+    "label": "instruction",
+    "dataset": [
+      {
+        "instruction": "Summarize the paragraph.",
+        "input": "Artificial intelligence is transforming healthcare by assisting doctors with diagnosis and treatment planning.",
+        "output": "AI improves healthcare diagnosis."
+      },
+      {
+        "instruction": "Summarize the paragraph.",
+        "input": "Solar energy reduces dependence on fossil fuels and lowers carbon emissions.",
+        "output": "Solar energy is environmentally friendly."
+      }
+    ]
+  },
+  {
+    "label": "instruction",
+    "dataset": [
+      {
+        "instruction": "Write a professional email requesting leave.",
+        "input": "Need two days off for medical reasons.",
+        "output": "Dear Manager, I would like to request two days of leave due to medical reasons..."
+      },
+      {
+        "instruction": "Write a thank-you email.",
+        "input": "Internship opportunity.",
+        "output": "Thank you for giving me the opportunity to intern with your organisation..."
+      }
+    ]
+  },
+  {
+    "label": "instruction",
+    "dataset": [
+      {
+        "instruction": "Generate three interview questions for a Python developer.",
+        "input": "",
+        "output": "1. Explain decorators. 2. What are generators? 3. Explain GIL."
+      },
+      {
+        "instruction": "Generate three interview questions for React.",
+        "input": "",
+        "output": "1. What are hooks? 2. Explain virtual DOM. 3. What is JSX?"
+      }
+    ]
+  },
+  {
+    "label": "instruction",
+    "dataset": [
+      {
+        "instruction": "Rewrite the sentence politely.",
+        "input": "Send me the report now.",
+        "output": "Could you please send me the report?"
+      },
+      {
+        "instruction": "Rewrite the sentence professionally.",
+        "input": "I can't come today.",
+        "output": "Unfortunately, I won't be able to attend today."
+      }
+    ]
+  },
+  {
+    "label": "instruction",
+    "dataset": [
+      {
+        "instruction": "Explain recursion in simple words.",
+        "input": "",
+        "output": "Recursion is when a function solves a problem by calling itself."
+      },
+      {
+        "instruction": "Explain REST API in simple words.",
+        "input": "",
+        "output": "A REST API allows applications to communicate over HTTP."
+      }
+    ]
+  }
+]

@@ -1,0 +1,92 @@
+[
+  {
+    "label": "qa",
+    "dataset": [
+      {
+        "question": "What is the capital of France?",
+        "context": "France is a country in Europe. Its capital city is Paris.",
+        "answer": "Paris"
+      },
+      {
+        "question": "Who developed Python?",
+        "context": "Python was created by Guido van Rossum in the late 1980s.",
+        "answer": "Guido van Rossum"
+      }
+    ]
+  },
+  {
+    "label": "qa",
+    "dataset": [
+      {
+        "question": "Which planet is known as the Red Planet?",
+        "context": "Mars appears red because of iron oxide on its surface.",
+        "answer": "Mars"
+      },
+      {
+        "question": "What is H2O commonly called?",
+        "context": "H2O is the chemical formula for water.",
+        "answer": "Water"
+      }
+    ]
+  },
+  {
+    "label": "qa",
+    "dataset": [
+      {
+        "question": "How many continents are there?",
+        "context": "Earth has seven continents.",
+        "answer": "Seven"
+      },
+      {
+        "question": "Who wrote Hamlet?",
+        "context": "Hamlet was written by William Shakespeare.",
+        "answer": "William Shakespeare"
+      }
+    ]
+  },
+  {
+    "label": "qa",
+    "dataset": [
+      {
+        "question": "When was the Internet invented?",
+        "context": "ARPANET, the precursor to the Internet, began in 1969.",
+        "answer": "1969"
+      },
+      {
+        "question": "Where is Mount Everest located?",
+        "context": "Mount Everest lies on the Nepal-China border.",
+        "answer": "Nepal-China border"
+      }
+    ]
+  },
+  {
+    "label": "qa",
+    "dataset": [
+      {
+        "question": "Why do plants need sunlight?",
+        "context": "Plants use sunlight for photosynthesis to produce food.",
+        "answer": "For photosynthesis"
+      },
+      {
+        "question": "Can penguins fly?",
+        "context": "Penguins are flightless birds adapted for swimming.",
+        "answer": "No"
+      }
+    ]
+  },
+  {
+    "label": "qa",
+    "dataset": [
+      {
+        "question": "What is the largest ocean?",
+        "context": "The Pacific Ocean is the largest ocean on Earth.",
+        "answer": "Pacific Ocean"
+      },
+      {
+        "question": "Which gas do humans breathe?",
+        "context": "Humans breathe oxygen for survival.",
+        "answer": "Oxygen"
+      }
+    ]
+  }
+]

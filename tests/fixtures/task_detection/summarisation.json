@@ -1,0 +1,80 @@
+[
+  {
+    "label": "summarisation",
+    "dataset": [
+      {
+        "document": "Artificial Intelligence is transforming healthcare by assisting doctors in diagnosing diseases, analysing medical images, predicting patient outcomes, and improving treatment recommendations. Hospitals increasingly rely on AI systems for efficiency.",
+        "summary": "AI helps doctors diagnose diseases and improve healthcare."
+      },
+      {
+        "document": "Climate change affects weather patterns worldwide, increasing temperatures, causing droughts, floods, and extreme storms. Scientists recommend reducing greenhouse gas emissions to limit future damage.",
+        "summary": "Climate change causes extreme weather and requires emission reductions."
+      }
+    ]
+  },
+  {
+    "label": "summarisation",
+    "dataset": [
+      {
+        "article": "The Indian Space Research Organisation launched a new satellite to improve communication services across rural regions while also supporting weather forecasting and disaster management.",
+        "summary": "ISRO launched a satellite for communication and weather services."
+      },
+      {
+        "article": "Researchers developed a new battery technology that charges faster, lasts longer, and reduces manufacturing costs compared with conventional lithium-ion batteries.",
+        "summary": "Researchers created a faster and cheaper battery."
+      }
+    ]
+  },
+  {
+    "label": "summarisation",
+    "dataset": [
+      {
+        "text": "Python is one of the world's most popular programming languages because of its readability, extensive libraries, and applications in web development, machine learning, automation, and scientific computing.",
+        "summary": "Python is popular due to readability and versatility."
+      },
+      {
+        "text": "Open-source software allows developers around the world to collaborate, improve applications, and distribute software freely under permissive licences.",
+        "summary": "Open-source software encourages collaboration and free distribution."
+      }
+    ]
+  },
+  {
+    "label": "summarisation",
+    "dataset": [
+      {
+        "document": "Electric vehicles reduce dependence on fossil fuels and produce fewer direct emissions. Improvements in battery technology have increased driving range while lowering charging time.",
+        "summary": "Electric vehicles reduce emissions and benefit from better batteries."
+      },
+      {
+        "document": "Solar energy systems convert sunlight into electricity using photovoltaic cells. Their adoption continues to rise because renewable energy reduces carbon emissions.",
+        "summary": "Solar panels generate renewable electricity."
+      }
+    ]
+  },
+  {
+    "label": "summarisation",
+    "dataset": [
+      {
+        "article": "Universities increasingly integrate AI into education by offering intelligent tutoring systems, automated grading, and personalised learning experiences for students.",
+        "summary": "Universities use AI for personalised education."
+      },
+      {
+        "article": "Cloud computing enables organisations to scale infrastructure quickly while reducing upfront hardware investment and maintenance costs.",
+        "summary": "Cloud computing provides scalable infrastructure."
+      }
+    ]
+  },
+  {
+    "label": "summarisation",
+    "dataset": [
+      {
+        "text": "Cybersecurity protects computer systems through encryption, authentication, firewalls, and intrusion detection systems designed to defend against cyber attacks.",
+        "summary": "Cybersecurity protects systems from attacks."
+      },
+      {
+        "text": "Machine learning models improve over time by learning patterns from data and making increasingly accurate predictions.",
+        "summary": "Machine learning improves predictions using data."
+      }
+    ]
+  }
+]
