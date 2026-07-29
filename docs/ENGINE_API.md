@@ -93,16 +93,17 @@ Supported values:
 
 ### Base Model
 
-Supported values:
+An opinionated list of supported base models.  Values outside this list require
+an explicit addition to the registry.
 
-* `auto`
-* Any valid Hugging Face model identifier.
+| Name                | HF ID                                      |
+|---------------------|--------------------------------------------|
+| Phi-3-mini          | `microsoft/Phi-3-mini-4k-instruct`         |
+| Llama 3.1 8B        | `meta-llama/Llama-3.1-8B-Instruct`         |
+| Qwen 2.5 7B         | `Qwen/Qwen2.5-7B-Instruct`                |
+| DeepSeek V3 distill | `deepseek-ai/DeepSeek-V3-distill`          |
 
-**Example**
-
-```text
-microsoft/Phi-3-mini-4k-instruct
-```
+* `auto` selects `microsoft/Phi-3-mini-4k-instruct` by default.
 
 ---
 
