@@ -87,7 +87,16 @@ class BuildRequest(BaseModel):
             from slmforge.finetune.registry import is_registered, list_models
 
             if not is_registered(self.base_model):
+<<<<<<< HEAD
                 valid = ", ".join(m.huggingface_id for m in list_models())
+=======
+                valid = ", ".join(
+                    f"{m.huggingface_id} ({k})"
+                    for k, m in sorted(
+                        {m.huggingface_id: m for m in list_models()}.items()
+                    )
+                )
+>>>>>>> c353c23 (Enhance base model validation and registry integration)
                 raise ValueError(
                     f"Unsupported base model '{self.base_model}'. Must be 'auto' or one of: {valid}"
                 )

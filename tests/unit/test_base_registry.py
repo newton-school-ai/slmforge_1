@@ -7,7 +7,11 @@ import pytest
 from slmforge.finetune.registry import (
     _DEFAULT_HF_ID,
     _REGISTRY,
+<<<<<<< HEAD
     get_model,
+=======
+    get_base,
+>>>>>>> c353c23 (Enhance base model validation and registry integration)
     is_registered,
     list_models,
     resolve,
@@ -33,6 +37,7 @@ def test_all_have_name() -> None:
         assert model.name, f"{model.huggingface_id} missing name"
 
 
+<<<<<<< HEAD
 def test_get_model_phi3() -> None:
     model = get_model("microsoft/Phi-3-mini-4k-instruct")
     assert model.name == "Phi-3-mini"
@@ -67,6 +72,53 @@ def test_get_model_empty_raises() -> None:
 
 
 def test_is_registered_true() -> None:
+=======
+def test_get_base_by_short_name_phi3() -> None:
+    model = get_base("phi-3-mini")
+    assert model.name == "Phi-3-mini"
+    assert model.huggingface_id == "microsoft/Phi-3-mini-4k-instruct"
+    assert model.vram_gb == 8.0
+    assert model.license == "MIT"
+
+
+def test_get_base_by_hf_id_phi3() -> None:
+    model = get_base("microsoft/Phi-3-mini-4k-instruct")
+    assert model.name == "Phi-3-mini"
+
+
+def test_get_base_llama() -> None:
+    model = get_base("llama-3.1-8b")
+    assert model.name == "Llama 3.1 8B"
+    assert model.vram_gb == 16.0
+    assert model.license == "llama-3.1"
+
+
+def test_get_base_qwen() -> None:
+    model = get_base("qwen-2.5-7b")
+    assert model.name == "Qwen 2.5 7B"
+
+
+def test_get_base_deepseek() -> None:
+    model = get_base("deepseek-v3-distill")
+    assert model.name == "DeepSeek V3 distill"
+
+
+def test_get_base_unknown_raises() -> None:
+    with pytest.raises(ValueError, match="not registered; add it deliberately"):
+        get_base("nonexistent/model")
+
+
+def test_get_base_empty_raises() -> None:
+    with pytest.raises(ValueError, match="non-empty"):
+        get_base("")
+
+
+def test_is_registered_by_short_name() -> None:
+    assert is_registered("phi-3-mini") is True
+
+
+def test_is_registered_by_hf_id() -> None:
+>>>>>>> c353c23 (Enhance base model validation and registry integration)
     assert is_registered("microsoft/Phi-3-mini-4k-instruct") is True
 
 
@@ -92,7 +144,11 @@ def test_resolve_registered_model() -> None:
 
 
 def test_resolve_unknown_raises() -> None:
+<<<<<<< HEAD
     with pytest.raises(ValueError, match="Unknown model"):
+=======
+    with pytest.raises(ValueError, match="not registered; add it deliberately"):
+>>>>>>> c353c23 (Enhance base model validation and registry integration)
         resolve("some/unknown-model")
 
 
@@ -105,9 +161,18 @@ def test_default_is_phi3() -> None:
     assert _DEFAULT_HF_ID == "microsoft/Phi-3-mini-4k-instruct"
 
 
+<<<<<<< HEAD
 def test_registry_keys_match_hf_ids() -> None:
     for hf_id, model in _REGISTRY.items():
         assert model.huggingface_id == hf_id
+=======
+def test_registry_keys_are_short_names() -> None:
+    for short_name, model in _REGISTRY.items():
+        assert model.huggingface_id != short_name
+        assert short_name in model.name.lower() or short_name.startswith(
+            model.name.split()[0].lower()
+        )
+>>>>>>> c353c23 (Enhance base model validation and registry integration)
 
 
 def test_all_models_are_frozen() -> None:
@@ -119,3 +184,16 @@ def test_all_models_are_frozen() -> None:
 def test_models_have_recommended_tasks() -> None:
     for model in list_models():
         assert len(model.recommended_task_types) > 0, f"{model.name} has no recommended tasks"
+<<<<<<< HEAD
+=======
+
+
+def test_phi3_tasks_match_pdf() -> None:
+    model = get_base("phi-3-mini")
+    assert model.recommended_task_types == ("classification", "instruction", "chat")
+
+
+def test_llama_tasks_match_pdf() -> None:
+    model = get_base("llama-3.1-8b")
+    assert model.recommended_task_types == ("instruction", "chat", "summarisation")
+>>>>>>> c353c23 (Enhance base model validation and registry integration)

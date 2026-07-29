@@ -48,7 +48,16 @@ def _validate_base_model(value: str | None) -> None:
         from slmforge.finetune.registry import is_registered, list_models
 
         if not is_registered(value):
+<<<<<<< HEAD
             valid = ", ".join(m.huggingface_id for m in list_models())
+=======
+            valid = ", ".join(
+                f"{m.huggingface_id} ({k})"
+                for k, m in sorted(
+                    {m.huggingface_id: m for m in list_models()}.items()
+                )
+            )
+>>>>>>> c353c23 (Enhance base model validation and registry integration)
             typer.echo(
                 f"Error: invalid base model '{value}' for --base. "
                 f"Must be 'auto' or one of: {valid}",
