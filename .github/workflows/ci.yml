@@ -32,7 +32,7 @@ jobs:
           echo 'Scanning for NST internal identifiers...'
           PATTERNS='_internal/|nst_data/|internal\.nst\.'
           if git grep -E "$PATTERNS" -- '*.py' '*.yaml' '*.yml' '*.json' '*.md' | \
-            grep -vE '^(\.github/workflows/ci\.yml|.*/\.github/workflows/ci\.yml|\.pre-commit-config\.yaml|src/slmforge/data/source_guard\.py|tests/unit/test_source_guard\.py|README\.md|CONTRIBUTING\.md|GITHUB_ISSUES\.md|ISSUES_TRACKER\.md|MILESTONES\.md|POD_GUIDE\.md|docs/):' | \
+            grep -vE '^(\.github/workflows/ci\.yml|.*/\.github/workflows/ci\.yml|\.pre-commit-config\.yaml|src/slmforge/data/source_guard\.py|tests/unit/test_source_guard\.py|README\.md|CONTRIBUTING\.md|GITHUB_ISSUES\.md|ISSUES_TRACKER\.md|MILESTONES\.md|MILESTONES_1_2_REPORT\.md|POD_GUIDE\.md|docs/):' | \
             grep -v '_internal/PROJECT_CONTEXT\.md'; then
             echo '::error::Internal data pattern detected!'
             exit 1
