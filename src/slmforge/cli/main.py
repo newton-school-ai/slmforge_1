@@ -50,9 +50,7 @@ def _validate_base_model(value: str | None) -> None:
         if not is_registered(value):
             valid = ", ".join(
                 f"{m.huggingface_id} ({k})"
-                for k, m in sorted(
-                    {m.huggingface_id: m for m in list_models()}.items()
-                )
+                for k, m in sorted({m.huggingface_id: m for m in list_models()}.items())
             )
             typer.echo(
                 f"Error: invalid base model '{value}' for --base. "

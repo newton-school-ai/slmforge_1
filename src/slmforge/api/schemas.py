@@ -89,9 +89,7 @@ class BuildRequest(BaseModel):
             if not is_registered(self.base_model):
                 valid = ", ".join(
                     f"{m.huggingface_id} ({k})"
-                    for k, m in sorted(
-                        {m.huggingface_id: m for m in list_models()}.items()
-                    )
+                    for k, m in sorted({m.huggingface_id: m for m in list_models()}.items())
                 )
                 raise ValueError(
                     f"Unsupported base model '{self.base_model}'. Must be 'auto' or one of: {valid}"
