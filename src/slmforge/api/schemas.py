@@ -81,6 +81,21 @@ class BuildRequest(BaseModel):
                 )
         return self
 
+    @model_validator(mode="after")
+    def validate_base_model(self) -> BuildRequest:
+        if self.base_model and self.base_model != "auto":
+            from slmforge.finetune.registry import is_registered, list_models
+
+            if not is_registered(self.base_model):
+                valid = ", ".join(
+                    f"{m.huggingface_id} ({k})"
+                    for k, m in sorted({m.huggingface_id: m for m in list_models()}.items())
+                )
+                raise ValueError(
+                    f"Unsupported base model '{self.base_model}'. Must be 'auto' or one of: {valid}"
+                )
+        return self
+
 
 class BuildResponse(BaseModel):
     build_id: str = Field(..., description="Unique ID for the build")

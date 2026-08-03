@@ -162,4 +162,4 @@ def test_build_invalid_base() -> None:
     result = runner.invoke(app, ["build", "--base", "no-slash", "--auto"])
     assert result.exit_code != 0
     assert "no-slash" in result.stderr
-    assert "HuggingFace" in result.stderr
+    assert "Phi-3-mini-4k-instruct" in result.stderr

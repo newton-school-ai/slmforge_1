@@ -6,7 +6,6 @@ Subcommands are stubbed for M1. Real implementations land in M7.
 from __future__ import annotations
 
 import json
-import re
 import urllib.request
 
 from typing import Any
@@ -25,8 +24,6 @@ _VALID_TASK_TYPES = frozenset(
 )
 
 _VALID_TEMPLATES = frozenset({"phi3", "llama3.1"})
-
-_BASE_MODEL_PATTERN = re.compile(r"^[a-zA-Z0-9_.-]+/[a-zA-Z0-9_.-]+$")
 
 _API_BASE = "http://localhost:8000"
 
@@ -47,14 +44,20 @@ def _validate_override(value: str | None, valid_set: frozenset, flag: str, label
 
 
 def _validate_base_model(value: str | None) -> None:
-    if value is not None and value != "auto" and not _BASE_MODEL_PATTERN.match(value):
-        typer.echo(
-            f"Error: invalid base model '{value}' for --base. "
-            "Must be 'auto' or a valid HuggingFace model ID "
-            "(e.g. 'microsoft/Phi-3-mini-4k-instruct').",
-            err=True,
-        )
-        raise typer.Exit(code=1)
+    if value is not None and value != "auto":
+        from slmforge.finetune.registry import is_registered, list_models
+
+        if not is_registered(value):
+            valid = ", ".join(
+                f"{m.huggingface_id} ({k})"
+                for k, m in sorted({m.huggingface_id: m for m in list_models()}.items())
+            )
+            typer.echo(
+                f"Error: invalid base model '{value}' for --base. "
+                f"Must be 'auto' or one of: {valid}",
+                err=True,
+            )
+            raise typer.Exit(code=1)
 
 
 def _build_payload(
