@@ -1,0 +1,62 @@
+[
+  {
+    "label": "classification",
+    "dataset": [
+      {"text": "I loved this movie.", "label": "positive"},
+      {"text": "Worst film ever.", "label": "negative"},
+      {"text": "Amazing acting.", "label": "positive"},
+      {"text": "Very boring.", "label": "negative"},
+      {"text": "Highly recommended.", "label": "positive"}
+    ]
+  },
+  {
+    "label": "classification",
+    "dataset": [
+      {"sentence": "The product is excellent.", "category": "good"},
+      {"sentence": "Terrible customer service.", "category": "bad"},
+      {"sentence": "Fast delivery.", "category": "good"},
+      {"sentence": "Damaged package.", "category": "bad"},
+      {"sentence": "Satisfied overall.", "category": "good"}
+    ]
+  },
+  {
+    "label": "classification",
+    "dataset": [
+      {"document": "Cats are wonderful pets.", "class": "animal"},
+      {"document": "Dogs are loyal companions.", "class": "animal"},
+      {"document": "Python is a programming language.", "class": "technology"},
+      {"document": "Java powers enterprise apps.", "class": "technology"},
+      {"document": "C++ is used in game engines.", "class": "technology"}
+    ]
+  },
+  {
+    "label": "classification",
+    "dataset": [
+      {"input": "Spam email detected.", "target": "spam"},
+      {"input": "Meeting invitation.", "target": "ham"},
+      {"input": "Lottery winner!", "target": "spam"},
+      {"input": "Project update.", "target": "ham"},
+      {"input": "Congratulations! Claim prize.", "target": "spam"}
+    ]
+  },
+  {
+    "label": "classification",
+    "dataset": [
+      {"text": "Apple", "sentiment": "fruit"},
+      {"text": "Banana", "sentiment": "fruit"},
+      {"text": "Car", "sentiment": "vehicle"},
+      {"text": "Bus", "sentiment": "vehicle"},
+      {"text": "Bike", "sentiment": "vehicle"}
+    ]
+  },
+  {
+    "label": "classification",
+    "dataset": [
+      {"body": "Rain expected tomorrow.", "label": "weather"},
+      {"body": "Sunny afternoon.", "label": "weather"},
+      {"body": "Football match tonight.", "label": "sports"},
+      {"body": "Cricket final starts.", "label": "sports"},
+      {"body": "Heavy snowfall predicted.", "label": "weather"}
+    ]
+  }
+]

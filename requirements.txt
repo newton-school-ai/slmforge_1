@@ -1,15 +1,9 @@
 # Core ML
-transformers>=4.44
-peft>=0.12
-bitsandbytes>=0.43
 datasets>=2.20
-accelerate>=0.33
-torch>=2.3
-sentence-transformers>=3.0
 scikit-learn>=1.5
 
 # Serving
-vllm>=0.5
+
 
 # Backend
 fastapi>=0.111
@@ -31,7 +25,6 @@ pyarrow>=16.0
 python-magic>=0.4.27
 
 # Retrieval (for Question Assistant recipe)
-faiss-cpu>=1.8
 
 # Eval
 sacrebleu>=2.4
@@ -43,3 +36,5 @@ pytest-asyncio>=0.23
 black>=24.4
 ruff>=0.4
 pre-commit>=3.7
+
+starlette>=0.36.0

@@ -1,0 +1,106 @@
+[
+  {
+    "label": "chat",
+    "dataset": [
+      {
+        "messages": [
+          { "role": "system", "content": "You are a helpful assistant." },
+          { "role": "user", "content": "Hello!" },
+          { "role": "assistant", "content": "Hi! How can I help you today?" }
+        ]
+      },
+      {
+        "messages": [
+          { "role": "user", "content": "What is Python?" },
+          { "role": "assistant", "content": "Python is a programming language." }
+        ]
+      }
+    ]
+  },
+  {
+    "label": "chat",
+    "dataset": [
+      {
+        "messages": [
+          { "role": "user", "content": "Tell me a joke." },
+          { "role": "assistant", "content": "Why did the programmer quit his job? Because he didn't get arrays." }
+        ]
+      },
+      {
+        "messages": [
+          { "role": "user", "content": "Explain recursion." },
+          { "role": "assistant", "content": "Recursion is when a function calls itself." }
+        ]
+      }
+    ]
+  },
+  {
+    "label": "chat",
+    "dataset": [
+      {
+        "messages": [
+          { "role": "system", "content": "You are a coding assistant." },
+          { "role": "user", "content": "Write a Python loop." },
+          { "role": "assistant", "content": "for i in range(10): print(i)" }
+        ]
+      },
+      {
+        "messages": [
+          { "role": "user", "content": "What is Git?" },
+          { "role": "assistant", "content": "Git is a distributed version control system." }
+        ]
+      }
+    ]
+  },
+  {
+    "label": "chat",
+    "dataset": [
+      {
+        "messages": [
+          { "role": "user", "content": "Good morning." },
+          { "role": "assistant", "content": "Good morning! Have a great day." }
+        ]
+      },
+      {
+        "messages": [
+          { "role": "user", "content": "Thank you." },
+          { "role": "assistant", "content": "You're welcome!" }
+        ]
+      }
+    ]
+  },
+  {
+    "label": "chat",
+    "dataset": [
+      {
+        "messages": [
+          { "role": "user", "content": "What is machine learning?" },
+          { "role": "assistant", "content": "Machine learning allows computers to learn from data." }
+        ]
+      },
+      {
+        "messages": [
+          { "role": "user", "content": "Explain REST APIs." },
+          { "role": "assistant", "content": "REST APIs enable communication over HTTP." }
+        ]
+      }
+    ]
+  },
+  {
+    "label": "chat",
+    "dataset": [
+      {
+        "messages": [
+          { "role": "user", "content": "Bye!" },
+          { "role": "assistant", "content": "Goodbye! Have a nice day." }
+        ]
+      },
+      {
+        "messages": [
+          { "role": "user", "content": "See you later." },
+          { "role": "assistant", "content": "See you soon!" }
+        ]
+      }
+    ]
+  }
+]
